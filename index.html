@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+    <title>Le Journalier</title>
+</head>
+
+
+
+
+
+<body onpageshow="Initialiser()">
+
+<div class="flex-column container">
+    <div>
+        <form name="postuler" action="index.html" method="get">
+            <h1>Devenez journaliste</h1>
+            <label>Nom<br>
+                <input type="text" name="nom" id="nom" required>
+            </label>
+            <label>Brève biographie<br>
+                <textarea rows="2" cols="1" name="biographie" id="biographie" required></textarea>
+            </label>
+            <div class="flex-column">
+                <div>
+                    <label>Spécialité
+                        <select name="specialite" id="specialite" required>
+                            <option value="politique">Politique</option>
+                            <option value="sciences">Sciences</option>
+                            <option value="sante">Sante</option>
+                        </select>
+                    </label>
+                    <p id="erreur_specialite" class="invisible">Erreur : un seul journaliste par spécialité est embauché.</p>
+                </div>
+                <div>
+                    <label>Couleur préférée
+                        <select name="couleur_pref" id="couleur_pref" required>
+                            <option value="rouge">Rouge</option>
+                            <option value="vert">Vert</option>
+                            <option value="bleu">Bleu</option>
+                        </select>
+                        <p id="erreur_couleur" class="invisible">Erreur : les journalistes doivent avoir des couleurs préférées différentes. SVP choisissez une autre couleur.</p>
+                    </label>
+                </div>
+            </div>
+            
+            <div>
+                <input id="submit" type="submit" onclick="return Envoyer()">
+                <input id="reset" type="reset" onclick="Initialiser()">
+            </div>
+        </form>
+    </div>
+
+    <div>
+        <h1>Notre équipe</h1>
+        <div id="equipe">
+
+        </div>
+    </div>
+</div>
+
+
+
+
+</body>
+</html>
