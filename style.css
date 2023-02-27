@@ -1,0 +1,14 @@
+.container {
+    margin: 0 auto;
+    max-width: 900px;
+}
+
+.flex-column {
+    display: flex;
+    justify-content: center;
+    align-content: space-between;
+}
+
+.invisible {
+    display: none;
+}
