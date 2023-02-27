@@ -1,3 +1,4 @@
+// Cette classe sert à créer des objets "Journaliste"
 class Journaliste {
     constructor(nom="", biographie="", specialite="", couleur_pref="") {
         this.nom = nom;
@@ -6,35 +7,40 @@ class Journaliste {
         this.couleur_pref = couleur_pref;
     }
 
+    // Cette méthode crée un string à partir des valeurs de l'objet
     toString() {
         return this.nom + "&" + this.biographie + "&" + this.specialite + "&" + this.couleur_pref + "#";
     }
 }
 
+// Cette classe sert à créer et à manipuler une liste de journalistes
 class Equipe {
     constructor(tabJournalistes = []) {
         this.tabJournalistes = tabJournalistes;
         this.compteur = 0;
     }
 
+    // Cette méthode ajoute un nouveau journaliste dans la liste, et compte les journalistes
     ajouterJournaliste(journaliste) {
         this.tabJournalistes[this.compteur] = journaliste;
         this.compteur++;
     }
 
+    // Cette méthode affiche le nouveau journaliste dans le HTML
     afficherJournaliste(journaliste) {
-        let texte = journaliste.nom + ", " + journaliste.specialite + ", " + journaliste.couleur_pref;
-        document.getElementById("equipe").append(texte);
-
-        /*
-        PARCELLE DE CODE NON FONCTIONNEL JUSQU'À PRÉSEMT
+        // Créer un élément <p></p> nommé tag
         const tag = document.createElement("p");
-        const texte = journaliste.nom + ", " + journaliste.specialite + ", " + journaliste.couleur_pref;
+        // Attribuer un id au tag
+        tag.setAttribute("id", "journaliste_"+this.compteur);
+        // Définir le contenu textuel du tag
+        const texte = document.createTextNode(journaliste.nom + ", " + journaliste.specialite + ", " + journaliste.couleur_pref);
+        // Ajouter le contenu textuel au tag
         tag.appendChild(texte);
-        document.getElementById("equipe").append(tag);
-        */
+        // Ajouter tag à la fin de la liste des journalistes
+        document.getElementById("equipe").appendChild(tag);
     }
 
+    // Cette méthode vérifie que le nouveau journaliste possède une spécialité qui n'a pas encore été choisie
     verifierSpecialite(journaliste) {
         for (let i = 0; i < this.tabJournalistes.length; i++)
         {
@@ -45,6 +51,7 @@ class Equipe {
         return true;
     }
 
+    // Cette méthode vérifie que le nouveau journaliste possède une couleur préférée qui n'a pas encore été choisie
     verifierCouleur(journaliste) {
         for (let i = 0; i < this.tabJournalistes.length; i++)
         {
@@ -56,47 +63,7 @@ class Equipe {
     }
 
     toString() {
-        return this.tabJournalistes;
-    }
-}
-
-function Initialiser() {
-    let temp = sessionStorage.getItem("journalistes");
-
-    if (temp != null)
-    {
-        equipe = new Equipe();
-
-        const journalistes = temp.split("#");
-        for (let i = 0; i < journalistes.length - 1; i++) {
-            let j = journalistes[i];
-            const attributs = j.split("&");
-            let journaliste = new Journaliste(attributs[0], attributs[1], attributs[2], attributs[3]);
-    
-            equipe.ajouterJournaliste(journaliste);
-            equipe.afficherJournaliste(journaliste);
-        }
-    } else {
-        equipe = new Equipe();
-    }
-}
-
-function Envoyer() {
-    let nom = document.getElementById("nom").value;
-    let biographie = document.getElementById("biographie").value;
-    let specialite = document.getElementById("specialite").value;
-    let couleur_pref = document.getElementById("couleur_pref").value;
-    let journaliste = new Journaliste(nom, biographie, specialite, couleur_pref);
-
-    if (equipe.verifierSpecialite(journaliste) && equipe.verifierCouleur(journaliste))
-    {
-        const temp1 = document.querySelector("#erreur_specialite");
-        temp1.classList.add('invisible');
-        const temp2 = document.querySelector("#erreur_couleur");
-        temp2.classList.add('invisible');
-
-        equipe.ajouterJournaliste(journaliste);
-
+        // Créer un string vide, puis concaténer la liste de journalistes dans ce string, puis retourner la valeur du string
         let j = "";
 
         for (let i = 0; i < equipe.compteur; i++)
@@ -104,15 +71,78 @@ function Envoyer() {
             j += equipe.tabJournalistes[i];
         }
 
-        sessionStorage.setItem("journalistes", j);
+        return j;
+    }
+}
+
+function Initialiser() {
+    // Aller chercher le string "journalistes" de la session
+    let temp = sessionStorage.getItem("journalistes");
+
+    // Si le string "journalistes" n'est pas nul
+    if (temp != null)
+    {
+        // Créer une nouvelle équipe de journalistes
+        equipe = new Equipe();
+
+        // "Diviser" le contenu du string temp pour tous les #
+        const journalistes = temp.split("#");
+
+        // Pour chaque string du tableau journalistes (sauf le string vide de la fin)
+        for (let i = 0; i < journalistes.length - 1; i++) {
+            // "Diviser" le contenu du string journalistes[i] pour tous les &
+            const attributs = journalistes[i].split("&");
+            // Créer un nouveau Journaliste
+            let journaliste = new Journaliste(attributs[0], attributs[1], attributs[2], attributs[3]);
+
+
+
+            // Test
+            console.log(journaliste);
+            // Test
+    
+
+
+            // Ajouter le journaliste à l'équipe
+            equipe.ajouterJournaliste(journaliste);
+            // Afficher le journaliste ajouté à l'équipe
+            equipe.afficherJournaliste(journaliste);
+        }
+    } else { // Si le string est nul, créer une nouvelle équipe de journalistes
+        equipe = new Equipe();
+    }
+}
+
+function Envoyer() {
+    // Aller chercher les valeurs du formulaire dans le HTML
+    let nom = document.getElementById("nom").value;
+    let biographie = document.getElementById("biographie").value;
+    let specialite = document.getElementById("specialite").value;
+    let couleur_pref = document.getElementById("couleur_pref").value;
+
+    // Créer un nouvel objet Journaliste
+    let journaliste = new Journaliste(nom, biographie, specialite, couleur_pref);
+
+    if (equipe.verifierSpecialite(journaliste) && equipe.verifierCouleur(journaliste)) // Vérifier si le/la nouveau/nouvelle journaliste correspond aux conditions
+    {
+        const temp1 = document.querySelector("#erreur_specialite");
+        temp1.classList.add('invisible');
+        const temp2 = document.querySelector("#erreur_couleur");
+        temp2.classList.add('invisible');
+
+        // Ajouter le/la nouveau/nouvelle journaliste à l'équipe des journalistes
+        equipe.ajouterJournaliste(journaliste);
+
+        // Enregistrer le string de l'équie des journalistes dans la session
+        sessionStorage.setItem("journalistes", equipe.toString());
 
         return true;
-    } else if (!equipe.verifierSpecialite(journaliste)) {
+    } else if (!equipe.verifierSpecialite(journaliste)) { // Dans le cas où la spécialité du journaliste a déjà été choisie
         const temp = document.querySelector("#erreur_specialite");
         temp.classList.remove('invisible');
 
         return false;
-    } else {
+    } else {  // Dans les autres cas
         const temp = document.querySelector("#erreur_couleur");
         temp.classList.remove('invisible');
 
