@@ -75,45 +75,59 @@ class Equipe {
     }
 }
 
-function Initialiser() {
+
+
+
+
+function initialiser() {
+    // Créer une nouvelle équipe de journalistes
+    equipe = new Equipe();
+    
     // Aller chercher le string "journalistes" de la session
     let temp = sessionStorage.getItem("journalistes");
 
     // Si le string "journalistes" n'est pas nul
     if (temp != null)
     {
-        // Créer une nouvelle équipe de journalistes
-        equipe = new Equipe();
-
-        // "Diviser" le contenu du string temp pour tous les #
-        const journalistes = temp.split("#");
-
-        // Pour chaque string du tableau journalistes (sauf le string vide de la fin)
-        for (let i = 0; i < journalistes.length - 1; i++) {
-            // "Diviser" le contenu du string journalistes[i] pour tous les &
-            const attributs = journalistes[i].split("&");
-            // Créer un nouveau Journaliste
-            let journaliste = new Journaliste(attributs[0], attributs[1], attributs[2], attributs[3]);
-
-
-
-            // Test
-            console.log(journaliste);
-            // Test
-    
-
-
-            // Ajouter le journaliste à l'équipe
-            equipe.ajouterJournaliste(journaliste);
-            // Afficher le journaliste ajouté à l'équipe
-            equipe.afficherJournaliste(journaliste);
-        }
-    } else { // Si le string est nul, créer une nouvelle équipe de journalistes
-        equipe = new Equipe();
+        recreerListeJournalistes(temp);
     }
 }
 
-function Envoyer() {
+function envoyer() {
+    return verifierNouveauJournaliste(creerNouveauJournaliste());
+}
+
+
+
+
+
+function recreerListeJournalistes(temp) {
+    // "Diviser" le contenu du string temp pour tous les #
+    const journalistes = temp.split("#");
+
+    // Pour chaque string du tableau journalistes (sauf le string vide de la fin)
+    for (let i = 0; i < journalistes.length - 1; i++) {
+        // "Diviser" le contenu du string journalistes[i] pour tous les &
+        const attributs = journalistes[i].split("&");
+        // Créer un nouveau Journaliste
+        let journaliste = new Journaliste(attributs[0], attributs[1], attributs[2], attributs[3]);
+
+
+
+        // Test
+        console.log(journaliste);
+        // Test
+
+
+
+        // Ajouter le journaliste à l'équipe
+        equipe.ajouterJournaliste(journaliste);
+        // Afficher le journaliste ajouté à l'équipe
+        equipe.afficherJournaliste(journaliste);
+    }
+}
+
+function creerNouveauJournaliste() {
     // Aller chercher les valeurs du formulaire dans le HTML
     let nom = document.getElementById("nom").value;
     let biographie = document.getElementById("biographie").value;
@@ -123,6 +137,10 @@ function Envoyer() {
     // Créer un nouvel objet Journaliste
     let journaliste = new Journaliste(nom, biographie, specialite, couleur_pref);
 
+    return journaliste;
+}
+
+function verifierNouveauJournaliste(journaliste) {
     if (equipe.verifierSpecialite(journaliste) && equipe.verifierCouleur(journaliste)) // Vérifier si le/la nouveau/nouvelle journaliste correspond aux conditions
     {
         const temp1 = document.querySelector("#erreur_specialite");
